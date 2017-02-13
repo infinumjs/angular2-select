@@ -4,10 +4,9 @@ import {Diacritics} from './diacritics';
 export class OptionList {
 
     private _options: Array<Option> = [];
-    private _selectedOptions: Array<Option>;
+    private _selection: Array<Option>;
 
     /* Consider using these for performance improvement. */
-    // private _selection: Array<Option>;
     // private _filtered: Array<Option>;
     // private _value: Array<string>;
 
@@ -19,7 +18,7 @@ export class OptionList {
             options = [];
         }
 
-        this._options = options.map((option) => {
+        this.options = options.map((option) => {
             return new Option(option.value, option.label, {disabled: option.disabled});
         });
 
@@ -30,6 +29,20 @@ export class OptionList {
 
     get options(): Array<Option> {
         return this._options;
+    }
+
+    set options(options: Array<Option>) {
+        const currentOptions = options;
+
+        this._selection.forEach((selectedOption: Option) => {
+            const index = currentOptions.indexOf(selectedOption);
+
+            if (index === -1) {
+                currentOptions.push(selectedOption);
+            }
+        });
+
+        this._options = currentOptions;
     }
 
     getOptionsByValue(value: string): Array<Option> {
@@ -50,16 +63,17 @@ export class OptionList {
         v = typeof v === 'undefined' || v === null ? [] : v;
 
         this.options.forEach((option) => {
-            option.selected = v.indexOf(option.value) > -1;
+            const isOptionSelected = v.indexOf(option.value) > -1;
+            if (isOptionSelected) {
+                this.select(option, true);  // TODO is it ok to have multiple=true here?
+            }
         });
     }
 
     /** Selection. **/
 
     get selection(): Array<Option> {
-        return this.options.filter((option) => {
-            return option.selected;
-        });
+        return this._selection;
     }
 
     select(option: Option, multiple: boolean) {
@@ -67,16 +81,25 @@ export class OptionList {
             this.clearSelection();
         }
         option.selected = true;
+        this._selection.push(option);
     }
 
     deselect(option: Option) {
+        const deselectedOptionIndex = this._selection.indexOf(option);
+
         option.selected = false;
+
+        if (deselectedOptionIndex > -1) {
+            this._selection.splice(deselectedOptionIndex, 1);
+        }
     }
 
     clearSelection() {
         this.options.forEach((option) => {
             option.selected = false;
         });
+
+        this._selection = [];
     }
 
     /** Filter. **/
