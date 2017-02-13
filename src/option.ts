@@ -12,13 +12,13 @@ export class Option {
     value: string;
     label: string;
 
-    private properties: OptionProperties;
+    private _properties: OptionProperties;
 
-    constructor(value: string, label: string, _properties?: OptionProperties) {
+    constructor(value: string, label: string, optionProperties?: OptionProperties) {
         this.value = value;
         this.label = label;
 
-        this.properties = Object.assign(defaultOptionProperties, _properties);
+        this._properties = Object.assign(defaultOptionProperties, optionProperties);
     }
 
     get disabled() {
@@ -51,6 +51,10 @@ export class Option {
 
     set shown(isShown: boolean) {
         this.properties.shown = isShown;
+    }
+
+    get properties() {
+        return this._properties;
     }
 
     show() {

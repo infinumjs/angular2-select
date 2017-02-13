@@ -20,11 +20,7 @@ export class OptionList {
         }
 
         this._options = options.map((option) => {
-            let o: Option = new Option(option.value, option.label);
-            if (option.disabled) {
-                o.disable();
-            }
-            return o;
+            return new Option(option.value, option.label, {disabled: option.disabled});
         });
 
         this.highlight();
