@@ -1,21 +1,56 @@
+import { OptionProperties } from './option-properties.interface';
+
+const defaultOptionProperties: OptionProperties = {
+    disabled: false,
+    highlighted: false,
+    selected: false,
+    shown: true
+};
+
 export class Option {
 
     value: string;
     label: string;
 
-    disabled: boolean;
-    highlighted: boolean;
-    selected: boolean;
-    shown: boolean;
+    private properties: OptionProperties;
 
-    constructor(value: string, label: string) {
+    constructor(value: string, label: string, _properties?: OptionProperties) {
         this.value = value;
         this.label = label;
 
-        this.disabled = false;
-        this.highlighted = false;
-        this.selected = false;
-        this.shown = true;
+        this.properties = Object.assign(defaultOptionProperties, _properties);
+    }
+
+    get disabled() {
+        return this.properties.disabled;
+    }
+
+    set disabled(isDisabled: boolean) {
+        this.properties.disabled = isDisabled;
+    }
+
+    get highlighted() {
+        return this.properties.highlighted;
+    }
+
+    set highlighted(isHighlighted: boolean) {
+        this.properties.highlighted = isHighlighted;
+    }
+
+    get selected() {
+        return this.properties.selected;
+    }
+
+    set selected(isSelected: boolean) {
+        this.properties.selected = isSelected;
+    }
+
+    get shown() {
+        return this.properties.shown;
+    }
+
+    set shown(isShown: boolean) {
+        this.properties.shown = isShown;
     }
 
     show() {

@@ -3,7 +3,8 @@ import {Diacritics} from './diacritics';
 
 export class OptionList {
 
-    private _options: Array<Option>;
+    private _options: Array<Option> = [];
+    private _selectedOptions: Array<Option>;
 
     /* Consider using these for performance improvement. */
     // private _selection: Array<Option>;
